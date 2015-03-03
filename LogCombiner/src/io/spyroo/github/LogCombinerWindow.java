@@ -22,7 +22,7 @@ public class LogCombinerWindow {
 	private JFrame frmLogFileCombiner;
 	private JTextField logFileLink1;
 	private JTextField logFileLink2;
-	private JTextField destFile;
+	private JTextField combinedName;
 	private JProgressBar progressBar;
 	private JTextField finalLogLink;
 	private JLabel lblLink;
@@ -56,7 +56,7 @@ public class LogCombinerWindow {
 	 * Create the application.
 	 */
 	public LogCombinerWindow() {
-		lc = new LogCombiner();
+		lc = new LogCombiner("Spyros Combiner", "65d7341d52f5260db135567f650422af");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
@@ -99,28 +99,28 @@ public class LogCombinerWindow {
 		JLabel lblDestinationFile = new JLabel("Combined Name");
 		frmLogFileCombiner.getContentPane().add(lblDestinationFile, "cell 0 2,alignx trailing");
 		
-		destFile = new JTextField();
-		frmLogFileCombiner.getContentPane().add(destFile, "cell 1 2 2 1,growx");
-		destFile.setColumns(10);
+		combinedName = new JTextField();
+		frmLogFileCombiner.getContentPane().add(combinedName, "cell 1 2 2 1,growx");
+		combinedName.setColumns(10);
 		
 		JButton btnCombine = new JButton("Combine");
 		btnCombine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				progressBar.setMaximum(100);
-				if(!logFileLink1.getText().isEmpty() && !logFileLink2.getText().isEmpty() && !destFile.getText().isEmpty()){
+				if(!logFileLink1.getText().isEmpty() && !logFileLink2.getText().isEmpty() && !combinedName.getText().isEmpty()){
 					progressBar.setValue(15);
-					String clean = lc.cleanLogsUrl(logFileLink1.getText());
-					String clean2 = lc.cleanLogsUrl(logFileLink2.getText());
-					String url = lc.getLogDownload(clean);
-					String url2 = lc.getLogDownload(clean2);
+					String clean = lc.getCleanLogsLink(logFileLink1.getText());
+					String clean2 = lc.getCleanLogsLink(logFileLink2.getText());
+					String url = lc.getLogsDownloadLink(clean);
+					String url2 = lc.getLogsDownloadLink(clean2);
 					try {
 						File log1 = lc.getLogFile(url, clean);
 						progressBar.setValue(25);
 						File log2 = lc.getLogFile(url2, clean2);
 						progressBar.setValue(50);
-						File combined = lc.getCombinedFiles(log1, log2, destFile.getText());
+						File combined = lc.getCombinedFiles(log1, log2, combinedName.getText());
 						progressBar.setValue(75);
-						String response = lc.sendLog(destFile.getText(), mapNameText.getText(), combined);
+						String response = lc.sendLog(combinedName.getText(), mapNameText.getText(), combined);
 						if(response.contains("false")){
 							finalLogLink.setText("Error uploading log");
 						}else{
