@@ -108,6 +108,7 @@ public class LogCombinerWindow {
 			public void actionPerformed(ActionEvent arg0) {
 				progressBar.setMaximum(100);
 				if(!logFileLink1.getText().isEmpty() && !logFileLink2.getText().isEmpty() && !combinedName.getText().isEmpty()){
+					
 					progressBar.setValue(15);
 					String clean = lc.getCleanLogsLink(logFileLink1.getText());
 					String clean2 = lc.getCleanLogsLink(logFileLink2.getText());
@@ -133,6 +134,7 @@ public class LogCombinerWindow {
 					} catch (ZipException e) {
 						JOptionPane.showMessageDialog(frmLogFileCombiner, "ZIP Excpetion when reading file.\n" + e.getMessage());
 					}
+					
 				}else{
 					finalLogLink.setText("Can not send logs, Fill out all fields");
 				}
